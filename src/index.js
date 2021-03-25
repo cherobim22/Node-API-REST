@@ -6,7 +6,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extend: false}))/
 
 
-require('./controllers/authController')(app);
+require('./app/controllers/index')(app);
 
 app.listen(3333);
 console.log("filé");
