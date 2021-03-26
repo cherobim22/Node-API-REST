@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const access = require('../config/uri.json');
 
-const url = "mongodb+srv://cherobim:9eXxVnsMFlCoplqk@cluster0.krk0w.mongodb.net/teste?retryWrites=true&w=majority";
+const url = access.uri;
 
 mongoose.set('useFindAndModify', false);
 
