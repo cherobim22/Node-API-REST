@@ -9,7 +9,6 @@ router.use(middleware);
 
 router.get('/', async(req, res) =>{
     try{
-
         const project = await Project.find().populate(['user', 'tasks']);
         return res.send({project});
     }catch(err){
@@ -31,7 +30,6 @@ router.get('/:projectId', async(req, res) =>{
 
 router.delete('/:projectId', async(req, res) =>{
     try{
-
         await Project.findByIdAndRemove(req.params.projectId)
         return res.status(200).send({ok: 'true'});
     }catch(err){
