@@ -6,8 +6,6 @@ const crypto = require('crypto');
 const mailer = require('../../modules/mailer');
 
 const authConfig = require('../../config/auth.json');
-const { now } = require('mongoose');
-const { Router } = require('express');
 const router = express.Router();
 
 function generateToken(params = {}){
@@ -80,11 +78,6 @@ router.post('/forgot', async(req, res)=>{
                 passwordResetExpires: now
             }
         });
-
-        console.log({user});
-
-
-        console.log({token, now});
         mailer.sendMail({
            
             from: '"Fred Foo 👻" <foo@example.com>', // sender address
@@ -133,9 +126,6 @@ router.post('/reset', async(req, res)=>{
         await user.save();
 
         return res.send();
-
-
-
 
     }catch(err){
         console.log(err)
