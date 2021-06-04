@@ -1,6 +1,31 @@
 const express = require('express');
 const middleware = require('../middlewares/auth');
 const router = express.Router();
+const path = require('path');
+
+const multer = require('multer');
+
+const fileFilter = (req, file, cb) =>{
+    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+        cb(null, true);
+    }else{
+        cb(null, false);
+    }
+}
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb){
+        cb(null, './uploads/');
+
+    },
+    filename: function(req, file, cb){
+        cb(null, Date.now()+file.originalname);
+    }
+
+});
+
+
+const upload = multer({storage:storage, fileFilter:fileFilter});
 
 const Project = require('../models/projects')
 const Task = require('../models/task')
@@ -38,20 +63,25 @@ router.delete('/:projectId', async(req, res) =>{
 
 });
 
-router.post('/', async(req, res) =>{
+router.post('/', upload.single('image'), async(req, res) =>{
+    console.log(req.file);
     try{
-
+        const projectImage = '/uploads/'+req.file.filename;
         const {title, description, tasks} = req.body;
 
-        const project = await Project.create({title, description, user: req.userId });
+        const project = await Project.create({title, description, user: req.userId , projectImage});
 
-        await Promise.all(tasks.map(async task =>{
+        if(tasks){
+            await Promise.all(tasks.map(async task =>{
             const projectTask = new Task({ ...task, project: project._id});
 
             await projectTask.save();
 
             project.tasks.push(projectTask);
-        }));
+        }));  
+        }
+
+      
 
         await project.save();
 

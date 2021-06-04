@@ -1,1 +1,5 @@
 /node_modules
+/uploads
+index.html
+script.js
+.env
