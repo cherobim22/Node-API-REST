@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
 const path = require('path');
-// const access = require('../config/uri.json');
-
 require('dotenv/config');
-// console.log(process.env);
-const url = process.env.URI;
 
+const url = process.env.URI;
 
 mongoose.set('useFindAndModify', false);
 
